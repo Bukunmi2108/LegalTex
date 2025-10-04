@@ -1,0 +1,89 @@
+# =====================================
+# General
+# =====================================
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# =====================================
+# Node / React (Frontend)
+# =====================================
+node_modules/
+dist/
+build/
+.cache/
+.npm/
+.vite/
+coverage/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vite
+*.local
+vite.config.ts.timestamp-*
+vite.config.js.timestamp-*
+
+# =====================================
+# Python / FastAPI (Backend)
+# =====================================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.env
+.venv/
+venv/
+env/
+pip-wheel-metadata/
+instance/
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+.pyre/
+.coverage
+htmlcov/
+pytestdebug.log
+*.db-journal
+
+# =====================================
+# SQLite database files
+# =====================================
+*.sqlite3
+*.db
+
+# =====================================
+# OS and Editor
+# =====================================
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# =====================================
+# Build / Deployment
+# =====================================
+*.tar
+*.zip
+*.gz
+*.tgz
+*.rar
+*.7z
+uploads/
+staticfiles/
+media/
+
+# =====================================
+# Other
+# =====================================
+# Local environment or secrets
+.env*
+!example.env
