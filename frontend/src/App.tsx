@@ -1,35 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react'
+import Sidebar from './components/Sidebar'
+import EditorPane from './components/EditorPane'
+import PdfViewer from './components/PdfViewer'
 
-function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+export default function App(){
+const [code, setCode] = useState<string>(`\\documentclass{article}\\n\\begin{document}\\nLegalTex sample\\n\\end{document}`)
+const [pdfUrl, setPdfUrl] = useState<string | null>(null)
+return (
+<div className="h-screen flex bg-slate-50">
+<Sidebar onSelect={(c)=>setCode(c)} />
+<div className="flex-1 flex flex-col">
+<div className="h-14 border-b px-4 flex items-center">
+<h1 className="text-lg font-semibold">legalTex</h1>
+</div>
+<div className="flex flex-1">
+<div className="w-1/2 border-r">
+<EditorPane code={code} onChange={setCode} onPdfReady={setPdfUrl} />
+</div>
+<div className="w-1/2">
+<PdfViewer blobUrl={pdfUrl} />
+</div>
+</div>
+</div>
+</div>
+)
 }
-
-export default App
