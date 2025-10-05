@@ -12,13 +12,13 @@ export default function App() {
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   return (
-    <div className="h-screen flex flex-col bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-slate-100">
+    <div className="h-screen flex flex-col bg-background text-foreground dark">
       {/* Top Navbar */}
-      <header className="h-14 border-b px-4 flex items-center justify-between bg-white/60 dark:bg-zinc-800/50 backdrop-blur supports-[backdrop-filter]:bg-white/70">
+      <header className="h-14 border-b px-4 flex items-center justify-between bg-card backdrop-blur supports-[backdrop-filter]:bg-card/70">
         <h1 className="text-lg font-semibold tracking-tight select-none">
           Legal<span className="text-blue-600">Tex</span>
         </h1>
-        <div className="text-xs text-gray-500 dark:text-gray-400 italic">
+        <div className="text-xs text-foreground italic">
           LaTeX Editor for Legal Documents
         </div>
       </header>
@@ -26,7 +26,7 @@ export default function App() {
       {/* Main Content */}
       <main className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <aside className="w-60 border-r bg-gray-100/50 dark:bg-zinc-800/40">
+        <aside className="w-60 border-r bg-card">
           <Sidebar onSelect={(content) => setCode(content)} />
         </aside>
 

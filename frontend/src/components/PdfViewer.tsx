@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import * as pdfjsLib from "pdfjs-dist";
+import workerSrc from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
-// Proper worker configuration
-import pdfjsWorker from "pdfjs-dist/build/pdf.worker.min.mjs";
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker as any;
+// Correct way to assign worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
 
 interface PdfViewerProps {
   blobUrl: string | null;

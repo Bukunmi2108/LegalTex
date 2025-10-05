@@ -1,4 +1,4 @@
-declare module "pdfjs-dist/build/pdf.worker.min.mjs" {
-  const worker: string;
-  export default worker;
+declare module "*.mjs?url" {
+  const value: string;
+  export default value;
 }

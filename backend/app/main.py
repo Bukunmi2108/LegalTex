@@ -1,10 +1,11 @@
 
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.responses import StreamingResponse, JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from .db import get_db, Base, engine
-from .models import Project
-from .latex_runner import compile_latex
+from backend.app.db import get_db, Base, engine
+from backend.app.models import Project
+from backend.app.latex_runner import compile_latex
 from sqlalchemy.orm import Session
 import io, tempfile, os, subprocess
 
@@ -12,11 +13,21 @@ import io, tempfile, os, subprocess
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[""],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class CodeIn(BaseModel):
   code: str
   engine: str = 'pdflatex'
 
+@app.get("/")
+def get_home():
+  return {"message": "LegalTex is Running."}
 
 @app.post('/compile')
 def compile_endpoint(payload: CodeIn):
