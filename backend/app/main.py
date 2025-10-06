@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.responses import StreamingResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,15 +6,14 @@ from backend.app.db import get_db, Base, engine
 from backend.app.models import Project
 from backend.app.latex_runner import compile_latex
 from sqlalchemy.orm import Session
-import io, tempfile, os, subprocess
-
+import io, tempfile, os, subprocess, uuid
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[""],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -33,7 +31,7 @@ def get_home():
 def compile_endpoint(payload: CodeIn):
   try:
     pdf_bytes = compile_latex(payload.code, payload.engine)
-  except RuntimeError as e:
+  except Exception as e:
     return JSONResponse(status_code=400, content={'error': 'compilation failed', 'detail': str(e)})
   return StreamingResponse(io.BytesIO(pdf_bytes), media_type='application/pdf')
 
@@ -73,14 +71,17 @@ class ProjectIn(BaseModel):
   client: str | None = None
   jurisdiction: str | None = None
 
+class ProjectUpdateIn(BaseModel):
+  title: str
+  content: str
 
-@app.post('/projects')
+@app.post('/projects', status_code=201)
 def create_project(payload: ProjectIn, db: Session = Depends(get_db)):
   p = Project(title=payload.title, content=payload.content, matter_number=payload.matter_number, client=payload.client, jurisdiction=payload.jurisdiction)
   db.add(p)
   db.commit()
   db.refresh(p)
-  return {'id': p.id}
+  return p
 
 
 @app.get('/projects')
@@ -90,7 +91,7 @@ def list_projects(db: Session = Depends(get_db)):
 
 
 @app.get('/projects/{project_id}')
-def get_project(project_id: int, db: Session = Depends(get_db)):
+def get_project(project_id: uuid.UUID, db: Session = Depends(get_db)):
   p = db.query(Project).filter(Project.id == project_id).first()
   if not p:
     raise HTTPException(404, 'Not found')
@@ -98,14 +99,12 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
 
 
 @app.put('/projects/{project_id}')
-def update_project(project_id: int, payload: ProjectIn, db: Session = Depends(get_db)):
+def update_project(project_id: uuid.UUID, payload: ProjectUpdateIn, db: Session = Depends(get_db)):
   p = db.query(Project).filter(Project.id == project_id).first()
   if not p:
     raise HTTPException(404, 'Not found')
   p.title = payload.title
   p.content = payload.content
-  p.matter_number = payload.matter_number
-  p.client = payload.client
-  p.jurisdiction = payload.jurisdiction
   db.commit()
-  return {'ok': True}
+  db.refresh(p)
+  return p
