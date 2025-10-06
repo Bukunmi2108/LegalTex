@@ -1,8 +1,13 @@
+import { Route, Routes } from 'react-router-dom'
 import Editor from './pages/editor'
+import Home from './pages/home'
 
 const App = () => {
   return (
-    <Editor />
+  <Routes>
+    <Route path="/" element={<Home />} />
+    <Route path="/editor" element={<Editor />} />
+  </Routes>
   )
 }
 

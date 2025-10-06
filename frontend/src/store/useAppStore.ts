@@ -6,6 +6,8 @@ export interface Project {
   content: string;
   client?: string;
   matter_number?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 interface AppState {
