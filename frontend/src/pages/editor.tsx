@@ -44,7 +44,7 @@ export default function Editor() {
               onToggleSidebar={toggleSidebar}
             />
           </div>
-          <div className="w-full bg-muted/30 h-full">
+          <div className="w-full bg-muted/30 h-screen relative overflow-y-auto">
             <PdfViewer />
           </div>
         </section>
